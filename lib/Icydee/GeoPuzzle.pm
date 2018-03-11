@@ -11,6 +11,10 @@ has counter => (
     default => 0,
 );
 
+has pi => (
+    is => 'rw',
+);
+
 sub _build_fsa_states {
     my ($self) = @_;
 
@@ -27,7 +31,7 @@ sub _build_fsa_transitions {
     return {
         ping => {
             volley => FSA::Engine::Transition->new({
-                test    => sub {$self->counter < 20},
+                test    => sub {$self->pi->read(4)},
                 action  => sub {$self->counter($self->counter + 1)},
                 state   => 'pong',
             }),
@@ -39,7 +43,7 @@ sub _build_fsa_transitions {
         },
         pong => {
             return_volley => FSA::Engine::Transition->new({
-                test    => sub {1},
+                test    => sub { not $self->pi->read(4)},
                 state   => 'ping',
             }),
         },
