@@ -21,7 +21,7 @@ sub _build_fsa_states {
     return {
         ping => { entry_action => sub {print "ping\n"}},
         pong => { entry_action => sub {print "pong\n"}},
-	end  => { },
+        end  => { },
     }
 }
 

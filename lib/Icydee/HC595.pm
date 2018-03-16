@@ -61,7 +61,7 @@ sub output {
 
     foreach my $byte (@$bytes) {
         foreach my $bit (0..7) {
-	    $self->pi->write($self->ser_pin, 0x80 & ($byte << $bit);
+            $self->pi->write($self->ser_pin, 0x80 & ($byte << $bit);
             $self->pi->write($self->srclk, HI);
             usleep(1000);
             $self->pi->write($self->srclk, LO);
