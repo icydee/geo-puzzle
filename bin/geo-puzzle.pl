@@ -10,7 +10,7 @@ use lib "$FindBin::Bin/../lib";
 
 use Icydee::GeoPuzzle;
 use Icydee::HC595;
-use Time::HiRes qw(gettimeofday tv_interval);
+use Time::HiRes qw(gettimeofday tv_interval usleep);
 
 my $pi = RPi::PIGPIO->connect('127.0.0.1');
 
@@ -21,16 +21,17 @@ my $hc595 = Icydee::HC595->new({
 });
 
 
-
+my $hi = 0;
 
 while (1) {
     foreach my $output (0..255) {
         my $t0 = [gettimeofday];
-        $hc595->output([$output]);
+        $hc595->output([$output,$hi]);
         my $elapsed = tv_interval($t0, [gettimeofday]);
         print "Elapsed: $elapsed\n";
-        sleep(1);
+        usleep(100);
     }
+    $hi = 0 if ++$hi == 256;
 }
 
 
